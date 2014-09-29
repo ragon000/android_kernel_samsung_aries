@@ -29,6 +29,9 @@
 #ifdef CONFIG_MACH_ARIES
 #include <linux/mfd/max8998.h>
 #include <mach/gpio-aries.h>
+#elif defined(CONFIG_MACH_WAVE)
+#include <linux/mfd/max8998.h>
+#include <mach/gpio-wave.h>
 #else
 #include <linux/power/sec_battery.h>
 #include <mach/gpio-p1.h>

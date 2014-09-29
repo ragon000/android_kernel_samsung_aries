@@ -20,7 +20,7 @@
 #define ARMBOOT 1250000
 #define INTBOOT 1125000
 
-#ifdef CONFIG_MACH_ARIES
+#if defined(CONFIG_MACH_ARIES) || defined(CONFIG_MACH_WAVE)
 
 // DVS ARM
 #define DVSARM0 1400000 // 1400 MHz

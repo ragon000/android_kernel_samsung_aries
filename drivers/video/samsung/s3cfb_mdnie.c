@@ -114,7 +114,7 @@ mDNIe_data_type mDNIe_None[]=
 
 mDNIe_data_type mDNIe_Video[]=
 {
-#ifdef CONFIG_MACH_ARIES
+#if defined(CONFIG_MACH_ARIES) || defined(CONFIG_MACH_WAVE)
 	{0x0084, 0x0040},
 	{0x0090, 0x0000},
 	{0x0094, 0x0fff},
@@ -132,7 +132,7 @@ mDNIe_data_type mDNIe_Video[]=
 
 mDNIe_data_type mDNIe_Camera[]=
 {
-#ifdef CONFIG_MACH_ARIES
+#if defined(CONFIG_MACH_ARIES) || defined(CONFIG_MACH_WAVE)
 	{0x0084, 0x0040},
 	{0x0090, 0x0000},
 	{0x0094, 0x0FFF},
@@ -150,7 +150,7 @@ mDNIe_data_type mDNIe_Camera[]=
 
 mDNIe_data_type mDNIe_Camera_Outdoor_Mode[]=
 {
-#ifdef CONFIG_MACH_ARIES
+#if defined(CONFIG_MACH_ARIES) || defined(CONFIG_MACH_WAVE)
 	{0x0084, 0x0090},
 	{0x0090, 0x0000},
 	{0x0094, 0x0FFF},
@@ -179,7 +179,7 @@ mDNIe_data_type mDNIe_Bypass[]=
 
 mDNIe_data_type mDNIe_UI[]=
 {
-#ifdef CONFIG_MACH_ARIES
+#if defined(CONFIG_MACH_ARIES) || defined(CONFIG_MACH_WAVE)
 	{0x0084, 0x0040},
 	{0x0090, 0x0000},
 	{0x0094, 0x0fff},
@@ -206,7 +206,7 @@ mDNIe_data_type mDNIe_UI[]=
 
 mDNIe_data_type mDNIe_Video_Warm[]=
 {
-#ifdef CONFIG_MACH_ARIES
+#if defined(CONFIG_MACH_ARIES) || defined(CONFIG_MACH_WAVE)
 	{0x0084, 0x0020},
 	{0x0090, 0x0000},
 	{0x0094, 0x0fff},
@@ -224,7 +224,7 @@ mDNIe_data_type mDNIe_Video_Warm[]=
 
 mDNIe_data_type mDNIe_Video_WO_Mode[]=
 {
-#ifdef CONFIG_MACH_ARIES
+#if defined(CONFIG_MACH_ARIES) || defined(CONFIG_MACH_WAVE)
 	{0x0084, 0x0090},
 	{0x0090, 0x0000},
 	{0x0094, 0x0fff},
@@ -241,7 +241,7 @@ mDNIe_data_type mDNIe_Video_WO_Mode[]=
 
 mDNIe_data_type mDNIe_Video_Cold[]=
 {
-#ifdef CONFIG_MACH_ARIES
+#if defined(CONFIG_MACH_ARIES) || defined(CONFIG_MACH_WAVE)
 	{0x0084, 0x0020},
 	{0x0090, 0x0000},
 	{0x0094, 0x0fff},
@@ -258,7 +258,7 @@ mDNIe_data_type mDNIe_Video_Cold[]=
 
 mDNIe_data_type mDNIe_Video_CO_Mode[]=
 {
-#ifdef CONFIG_MACH_ARIES
+#if defined(CONFIG_MACH_ARIES) || defined(CONFIG_MACH_WAVE)
 	{0x0084, 0x0090},
 	{0x0090, 0x0000},
 	{0x0094, 0x0fff},
@@ -275,7 +275,7 @@ mDNIe_data_type mDNIe_Video_CO_Mode[]=
 
 mDNIe_data_type mDNIe_Outdoor_Mode[]=
 {
-#ifdef CONFIG_MACH_ARIES
+#if defined(CONFIG_MACH_ARIES) || defined(CONFIG_MACH_WAVE)
 	{0x0084, 0x0090},
 	{0x0090, 0x0000},
 	{0x0094, 0x0fff},
@@ -646,7 +646,7 @@ void mDNIe_Set_Mode(Lcd_mDNIe_UI mode, u8 mDNIe_Outdoor_OnOff)
 
 		current_mDNIe_UI = mode;
 
-#ifdef CONFIG_MACH_ARIES
+#if defined(CONFIG_MACH_ARIES) || defined(CONFIG_MACH_WAVE)
 		if(current_mDNIe_UI == mDNIe_UI_MODE || current_mDNIe_UI == mDNIe_BYPASS_MODE)
 			current_mDNIe_OutDoor_OnOff = FALSE;
 		else
@@ -1349,7 +1349,7 @@ void s5p_mdine_pwm_enable(int on)
 
 	if(on)
 		{
-#ifdef CONFIG_MACH_ARIES
+#if defined(CONFIG_MACH_ARIES) || defined(CONFIG_MACH_WAVE)
 		data = s3c_mdnie_readw(0x0084);
 		data = data | 0x0010;
 		s3c_mdnie_writel(data,0x0084);		// on

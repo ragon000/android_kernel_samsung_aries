@@ -42,7 +42,7 @@ struct fsa9480_platform_data {
 #endif
 };
 
-#ifdef CONFIG_MACH_ARIES
+#if defined(CONFIG_MACH_ARIES) ||defined(CONFIG_MACH_WAVE)
 extern int fsa9480_get_dock_status(void);
 #endif
 

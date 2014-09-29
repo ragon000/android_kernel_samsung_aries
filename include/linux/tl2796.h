@@ -9,7 +9,15 @@
  * it under the terms of the GNU General Public License version 2 as
  * published by the Free Software Foundation.
 */
+#ifndef __TL2796_H__
+#define __TL2796_H__
+
 #include <linux/types.h>
+
+#define SLEEPMSEC		0x1000
+#define ENDDEF			0x2000
+#define DATAMASK		0x0100
+#define	DEFMASK			0xFF00
 
 struct gamma_entry {
 	u32 brightness;
@@ -62,3 +70,4 @@ enum {
 	BV_255 = 0xFFFFFFFF,
 };
 
+#endif

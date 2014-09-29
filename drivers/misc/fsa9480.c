@@ -243,7 +243,7 @@ static const struct attribute_group fsa9480_group = {
 	.attrs = fsa9480_attributes,
 };
 
-#ifdef CONFIG_MACH_ARIES
+#if defined (CONFIG_MACH_ARIES)|| defined(CONFIG_MACH_WAVE)
 static int cardock_enable = 0;
 static int deskdock_enable = 0;
 
@@ -398,7 +398,7 @@ static void fsa9480_detect_dev(struct fsa9480_usbsw *usbsw)
 		} else if (val1 & DEV_T1_UART_MASK || val2 & DEV_T2_UART_MASK) {
 			if (pdata->uart_cb)
 				pdata->uart_cb(FSA9480_ATTACHED);
-#ifdef CONFIG_MACH_ARIES
+#if defined(CONFIG_MACH_ARIES) || defined (CONFIG_MACH_WAVE)
 			if (usbsw->mansw) {
 				ret = i2c_smbus_write_byte_data(client,
 					FSA9480_REG_MANSW1, SW_UART);
@@ -420,7 +420,7 @@ static void fsa9480_detect_dev(struct fsa9480_usbsw *usbsw)
 			if (pdata->deskdock_cb)
 				pdata->deskdock_cb(FSA9480_ATTACHED);
 
-#if defined(CONFIG_MACH_ARIES)
+#if defined(CONFIG_MACH_ARIES) || defined(CONFIG_MACH_WAVE)
 			deskdock_status = 1;
 #if defined(CONFIG_SAMSUNG_CAPTIVATE) || defined(CONFIG_SAMSUNG_FASCINATE)
             ret = i2c_smbus_write_byte_data(client,
@@ -446,13 +446,13 @@ static void fsa9480_detect_dev(struct fsa9480_usbsw *usbsw)
 			if (ret < 0)
 				dev_err(&client->dev,
 					"%s: err %d\n", __func__, ret);
-#endif //CONFIG_MACH_ARIES
+#endif //CONFIG_MACH_ARIES || CONFIG_MACH_WAVE
 		/* Car Dock */
 		} else if (val2 & DEV_JIG_UART_ON) {
 			if (pdata->cardock_cb)
 				pdata->cardock_cb(FSA9480_ATTACHED);
 
-#if defined(CONFIG_MACH_ARIES)
+#if defined(CONFIG_MACH_ARIES) ||defined(CONFIG_MACH_WAVE)
 			cardock_status = 1;
 #if defined(CONFIG_SAMSUNG_CAPTIVATE) || defined(CONFIG_SAMSUNG_FASCINATE)
 
@@ -480,7 +480,7 @@ static void fsa9480_detect_dev(struct fsa9480_usbsw *usbsw)
             if (ret < 0)
                     dev_err(&client->dev,
                             "%s: err %d\n", __func__, ret);
-#endif //CONFIG_MACH_ARIES
+#endif //CONFIG_MACH_ARIES || CONFIG_MACH_WAVE
 		}
 	/* Detached */
 	} else {
@@ -510,7 +510,7 @@ static void fsa9480_detect_dev(struct fsa9480_usbsw *usbsw)
 		} else if (usbsw->dev2 & DEV_AV) {
 			if (pdata->deskdock_cb)
 				pdata->deskdock_cb(FSA9480_DETACHED);
-#ifdef CONFIG_MACH_ARIES
+#if defined(CONFIG_MACH_ARIES) || defined(CONFIG_MACH_WAVE)
 			deskdock_status = 0;
 
 			ret = i2c_smbus_read_byte_data(client,
@@ -530,7 +530,7 @@ static void fsa9480_detect_dev(struct fsa9480_usbsw *usbsw)
 			if (pdata->cardock_cb)
 				pdata->cardock_cb(FSA9480_DETACHED);
 
-#if defined(CONFIG_MACH_ARIES)
+#if defined(CONFIG_MACH_ARIES) || defined(CONFIG_MACH_WAVE)
 			cardock_status = 0;
 
             ret = i2c_smbus_read_byte_data(client,
@@ -552,7 +552,7 @@ static void fsa9480_detect_dev(struct fsa9480_usbsw *usbsw)
 	usbsw->dev2 = val2;
 }
 
-#if defined(CONFIG_MACH_ARIES)
+#if defined(CONFIG_MACH_ARIES) || defined(CONFIG_MACH_WAVE)
 int fsa9480_get_dock_status(void)
 {
 	if ((cardock_status && cardock_enable) ||
