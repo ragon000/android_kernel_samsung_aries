@@ -1219,12 +1219,12 @@ static int __init s3cfb_probe(struct platform_device *pdev)
 	register_early_suspend(&fbdev->early_suspend);
 #endif
 
-	if(machine_is_wave()) {
-		/* FIXME: ugly hack around for configuring AMOLED */
-		s3cfb_early_suspend(&fbdev->early_suspend);
-		msleep(200);
-		s3cfb_late_resume(&fbdev->early_suspend);
-	}
+#ifdef CONFIG_MACH_WAVE
+	/* FIXME: ugly hack around for configuring display */
+	s3cfb_early_suspend(&fbdev->early_suspend);
+	msleep(200);
+	s3cfb_late_resume(&fbdev->early_suspend);
+#endif
 
 	ret = device_create_file(&(pdev->dev), &dev_attr_win_power);
 	if (ret < 0)
