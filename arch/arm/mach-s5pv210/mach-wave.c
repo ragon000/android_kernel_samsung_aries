@@ -48,7 +48,6 @@
 #include <mach/system.h>
 #include <mach/sec_switch.h>
 
-#include <mach/voltages.h>
 #include <linux/usb/gadget.h>
 #include <linux/fsa9480.h>
 #include <linux/pn544.h>
@@ -364,40 +363,40 @@ static struct s5p_media_device wave_media_devs[] = {
 static struct s5pv210_cpufreq_voltage smdkc110_cpufreq_volt[] = {
 	{
 		.freq	= 1400000,
-		.varm	= DVSARM0,
-		.vint	= DVSINT0,
+		.varm	= 1350000,
+		.vint	= 1150000,
 	}, {
 		.freq	= 1300000,
-		.varm	= DVSARM1,
-		.vint	= DVSINT0,
+		.varm	= 1325000,
+		.vint	= 1125000,
 	}, {
 		.freq	= 1200000,
-		.varm	= DVSARM2,
-		.vint	= DVSINT1,
+		.varm	= 1275000,
+		.vint	= 1100000,
 	}, {
 		.freq	= 1100000,
-		.varm	= DVSARM3,
-		.vint	= DVSINT1,
+		.varm	= 1275000,
+		.vint	= 1100000,
 	}, {
 		.freq	= 1000000,
-		.varm	= DVSARM4,
-		.vint	= DVSINT2,
+		.varm	= 1275000,
+		.vint	= 1100000,
 	}, {
 		.freq	=  800000,
-		.varm	= DVSARM5,
-		.vint	= DVSINT2,
+		.varm	= 1200000,
+		.vint	= 1100000,
 	}, {
 		.freq	=  400000,
-		.varm	= DVSARM6,
-		.vint	= DVSINT2,
+		.varm	= 1050000,
+		.vint	= 1100000,
 	}, {
 		.freq	=  200000,
-		.varm	= DVSARM7,
-		.vint	= DVSINT2,
+		.varm	=  950000,
+		.vint	= 1100000,
 	}, {
 		.freq	=  100000,
-		.varm	= DVSARM7,
-		.vint	= DVSINT3,
+		.varm	=  950000,
+		.vint	= 1000000,
 	},
 };
 
@@ -678,7 +677,7 @@ static struct regulator_init_data wave_buck1_data = {
 		.valid_ops_mask	= REGULATOR_CHANGE_VOLTAGE |
 				  REGULATOR_CHANGE_STATUS,
 		.state_mem	= {
-			.uV	= ARMBOOT,
+			.uV	= 1250000,
 			.mode	= REGULATOR_MODE_NORMAL,
 			.disabled = 1,
 		},
@@ -696,7 +695,7 @@ static struct regulator_init_data wave_buck2_data = {
 		.valid_ops_mask	= REGULATOR_CHANGE_VOLTAGE |
 				  REGULATOR_CHANGE_STATUS,
 		.state_mem	= {
-			.uV	= INTBOOT,
+			.uV	= 1200000,
 			.mode	= REGULATOR_MODE_NORMAL,
 			.disabled = 1,
 		},
