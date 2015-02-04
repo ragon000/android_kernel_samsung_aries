@@ -3,14 +3,14 @@ export _PATH="$PATH"
 export PATH=/stage1
 
 busybox cd /
-busybox date >>boot.txt
-exec >>boot.txt 2>&1
+busybox date >> boot.txt
+exec >> boot.txt 2>&1
 busybox rm init
 busybox mount -t proc proc /proc
 busybox mount -t sysfs sysfs /sys
 
 while ! busybox test -d /sys/dev/block/179:0 ; do
-    busybox echo "waiting for internal mmc" >>boot.txt
+    busybox echo "waiting for internal mmc" >> boot.txt
     busybox sleep 1
 done
 
@@ -18,51 +18,66 @@ done
 /lvm/sbin/lvm vgchange -aly --ignorelockingfailure
 
 busybox mount -t ext4 /dev/lvpool/system /system
-busybox mount -t yaffs2 /dev/block/mtdblock3 /cache
+busybox mount -t yaffs2 /dev/block/mtdblock2 /cache
 
 load_image=/stage1/boot.cpio
 
 if busybox test -e /cache/.startrecovery || busybox grep -q bootmode=2 /proc/cmdline ; then
     # recovery boot
-    busybox echo 'RECOVERY BOOT' >>boot.txt
+    busybox echo 'RECOVERY BOOT' >> boot.txt
     busybox rm -fr /cache/.startrecovery
     load_image=/stage1/recovery.cpio
-    busybox echo "loading recovery.cpio" >>boot.txt
+    busybox echo "loading recovery.cpio" >> boot.txt
+
+    # disable lpm
+    busybox echo 0 > /sys/class/power_supply/battery/charging_mode_booting
 
 elif ! busybox test -e /system/build.prop ; then
 
     # emergency boot
-    busybox echo "EMERGENCY BOOT" >>boot.txt
+    busybox echo "EMERGENCY BOOT" >> boot.txt
     busybox umount /cache
     erase_image cache
-    busybox mount -t yaffs2 /dev/block/mtdblock3 /cache
+    busybox mount -t yaffs2 /dev/block/mtdblock2 /cache
 
     if ! busybox test -e /cache/recovery ; then
         busybox mkdir /cache/recovery
     fi
 
-    busybox mount -t vfat /dev/block/mmcblk0p1 /sdcard
-    busybox sleep 1
+    if busybox test -e /dev/lvpool/userdata ; then
+        busybox mount -t ext4 /dev/lvpool/userdata /data
+        busybox rm -fr /sdcard
+        busybox ln -s /data/media /sdcard
+    else
+        busybox mount -t vfat /dev/block/mmcblk0p1 /sdcard
+    fi
 
     if busybox test -e /sdcard/omni.cfg ; then
-        busybox echo "installing: `busybox cat /sdcard/omni.cfg`" >>boot.txt
-        busybox echo "creating recovery command" >>boot.txt
+        busybox echo "installing: `busybox cat /sdcard/omni.cfg`" >> boot.txt
+        busybox echo "creating recovery command" >> boot.txt
         busybox touch /cache/recovery/command
         busybox echo "--update_package=`busybox cat /sdcard/omni.cfg`" > /cache/recovery/command
     else
-        busybox echo "omni.cfg not found" >>boot.txt
+        busybox echo "omni.cfg not found" >> boot.txt
     fi
 
-    busybox echo "loading recovery.cpio" >>boot.txt
+    busybox echo "loading recovery.cpio" >> boot.txt
     load_image=/stage1/recovery.cpio
 
-    # umount sdcard
-    busybox umount /sdcard
+    # disable lpm
+    busybox echo 0 > /sys/class/power_supply/battery/charging_mode_booting
 
+    # umount sdcard
+    if ! busybox test -e /dev/lvpool/userdata ; then
+        busybox umount /sdcard
+        busybox rmdir /sdcard
+    else
+        busybox umount /data
+    fi
 else
     # android boot
-    busybox echo "ANDROID BOOT" >>boot.txt
-    busybox echo "loading boot.cpio" >>boot.txt
+    busybox echo "ANDROID BOOT" >> boot.txt
+    busybox echo "loading boot.cpio" >> boot.txt
 fi
 
 busybox umount /cache
@@ -70,12 +85,6 @@ busybox umount /system
 busybox rmdir /sdcard
 
 busybox cpio -ui < ${load_image}
-
-if busybox grep -q 1 /sys/class/power_supply/battery/charging_mode_booting ; then
-    # low power mode
-    busybox cp lpm.rc init.rc
-    busybox rm -fr init.p1.rc
-fi
 
 HW=$(busybox cat /proc/cpuinfo | \
     busybox grep Hardware | \
@@ -96,9 +105,16 @@ if [ "$HW" != "p1" ] ; then
     busybox ln -s /ueventd.p1.rc /ueventd.$HW.rc
 fi
 
+if busybox grep -q 1 /sys/class/power_supply/battery/charging_mode_booting ; then
+    # low power mode
+    busybox cp lpm.rc init.rc
+    busybox rm -fr init.p1ln.rc
+    busybox rm -fr init.p1.rc
+fi
+
 busybox umount /sys
 busybox umount /proc
-busybox date >>boot.txt
+busybox date >> boot.txt
 busybox rm -fr /stage1 /dev/*
 export PATH="${_PATH}"
 exec /init
