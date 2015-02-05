@@ -201,7 +201,6 @@ static int fib_uid_range_match(struct flowi *fl, struct fib_rule *rule)
 		uid_lte(fl->flowi_uid, rule->uid_end));
 }
 
-
 static int fib_rule_match(struct fib_rule *rule, struct fib_rules_ops *ops,
 			  struct flowi *fl, int flags)
 {
