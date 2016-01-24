@@ -427,35 +427,35 @@ static struct s5pv210_cpufreq_voltage smdkc110_cpufreq_volt[] = {
 	}, {
 		.freq	= 1300000,
 		.varm	= DVSARM1,
-		.vint	= DVSINT0,
+		.vint	= DVSINT1,
 	}, {
 		.freq	= 1200000,
 		.varm	= DVSARM2,
-		.vint	= DVSINT1,
+		.vint	= DVSINT2,
 	}, {
 		.freq	= 1100000,
 		.varm	= DVSARM3,
-		.vint	= DVSINT1,
+		.vint	= DVSINT2,
 	}, {
 		.freq	= 1000000,
 		.varm	= DVSARM4,
-		.vint	= DVSINT2,
+		.vint	= DVSINT3,
 	}, {
 		.freq	=  800000,
 		.varm	= DVSARM5,
-		.vint	= DVSINT2,
+		.vint	= DVSINT3,
 	}, {
 		.freq	=  400000,
 		.varm	= DVSARM6,
-		.vint	= DVSINT2,
+		.vint	= DVSINT3,
 	}, {
 		.freq	=  200000,
 		.varm	= DVSARM7,
-		.vint	= DVSINT2,
+		.vint	= DVSINT3,
 	}, {
 		.freq	=  100000,
 		.varm	= DVSARM7,
-		.vint	= DVSINT3,
+		.vint	= DVSINT4,
 	},
 };
 
@@ -734,7 +734,7 @@ static struct regulator_init_data aries_buck1_data = {
 	.constraints	= {
 		.name		= "VDD_ARM",
 		.min_uV		= 750000,
-		.max_uV		= 1500000,
+		.max_uV		= 1600000,
 		.apply_uV	= 1,
 		.valid_ops_mask	= REGULATOR_CHANGE_VOLTAGE |
 				  REGULATOR_CHANGE_STATUS,
@@ -1117,10 +1117,6 @@ static struct s3c_platform_fb tl2796_data __initdata = {
 };
 
 #define LCD_BUS_NUM     3
-#define DISPLAY_CS      S5PV210_MP01(1)
-#define SUB_DISPLAY_CS  S5PV210_MP01(2)
-#define DISPLAY_CLK     S5PV210_MP04(1)
-#define DISPLAY_SI      S5PV210_MP04(3)
 
 static struct spi_board_info spi_board_info[] __initdata = {
 	{
@@ -1130,13 +1126,13 @@ static struct spi_board_info spi_board_info[] __initdata = {
 		.bus_num	= LCD_BUS_NUM,
 		.chip_select	= 0,
 		.mode		= SPI_MODE_3,
-		.controller_data = (void *)DISPLAY_CS,
+		.controller_data = (void *)GPIO_DISPLAY_CS,
 	},
 };
 
 static struct spi_gpio_platform_data tl2796_spi_gpio_data = {
-	.sck	= DISPLAY_CLK,
-	.mosi	= DISPLAY_SI,
+	.sck	= GPIO_DISPLAY_CLK,
+	.mosi	= GPIO_DISPLAY_SI,
 	.miso	= -1,
 	.num_chipselect = 2,
 };
