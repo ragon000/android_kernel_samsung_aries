@@ -301,7 +301,7 @@ static int fimc_camera_start(struct fimc_control *ctrl)
 		}
 	} else {
 #ifndef CONFIG_SAMSUNG_GALAXYS4G
-#ifdef CONFIG_MACH_ARIES  || defined(CONFIG_MACH_WAVE)
+#if defined(CONFIG_MACH_ARIES) || defined(CONFIG_MACH_WAVE)
 		if (vtmode == 1 && device_id != 0 && (ctrl->cap->rotate == 90 || ctrl->cap->rotate == 270)) {
 #else // CONFIG_MACH_P1
 		if ((ctrl->vt_mode == 1 || ctrl->vt_mode == 2)
@@ -1878,7 +1878,7 @@ int fimc_streamon_capture(void *fh)
 		}
 	}
 
-#elif defined(CONFIG_MACH_ARIES) && !defined(CONFIG_SAMSUNG_GALAXYS4G)
+#elif defined(CONFIG_MACH_ARIES) && !defined(CONFIG_SAMSUNG_GALAXYS4G) || defined(CONFIG_MACH_WAVE)
 
 	if (!ctrl->cam->initialized)
 		fimc_camera_init(ctrl);
